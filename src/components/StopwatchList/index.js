@@ -7,6 +7,7 @@ function StopwatchList() {
       id: 0,
       value: 0,
       play: false,
+      syncStamp: null,
     },
   ]);
 
