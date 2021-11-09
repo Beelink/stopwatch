@@ -1,5 +1,16 @@
 @import "../../assets/scss/variables.scss";
 
 .add-stopwatch-button {
-    background: $accent-color;
+    text-align: center;
+    padding: 32px;
+
+    &__button {
+        background: $accent-color;
+        border: none;
+        color: #fff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
 }

@@ -1,5 +1,5 @@
-import './App.css';
 import StopwatchList from './components/StopwatchList';
+import AddStopwatchButton from './components/AddStopwatchButton';
 
 function App() {
   return (

@@ -1,3 +1,46 @@
+@import "../../assets/scss/variables.scss";
+
 .stopwatch {
-    
+  border-radius: 50%;
+  border: 1px solid $border-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  flex-direction: column;
+
+  &__value {
+    margin: 24px 0 0;
+    font-size: 32px;
+  }
+
+  &__buttons {
+    list-style: none;
+    padding: 16px;
+    margin: 0;
+    display: flex;
+
+    li {
+      margin-right: 8px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &__button {
+    border: 1px solid $border-color;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background: $back-color;
+
+    &--blue {
+      background: $accent-color;
+      color: #fff;
+      border-color: $accent-color;
+    }
+  }
 }
