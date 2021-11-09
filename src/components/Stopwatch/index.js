@@ -22,7 +22,7 @@ function Stopwatch({ value, play, playChanged, onTick }) {
       clearInterval(interval);
       setInter(null);
     }
-    playChanged(!play);
+    playChanged(p);
   };
 
   const _togglePlay = () => {
@@ -30,8 +30,8 @@ function Stopwatch({ value, play, playChanged, onTick }) {
   };
 
   const _resetStopwatch = () => {
-    onTick(0);
     _setPlay(false);
+    onTick(0);
   };
 
   const _formatValue = (value) => {
