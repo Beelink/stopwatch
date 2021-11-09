@@ -2,7 +2,7 @@ import "./index.scss";
 import React, { useState, useEffect } from "react";
 import cn from "classnames";
 
-function Stopwatch({ value, play, playChanged, onTick }) {
+const Stopwatch = ({ value, play, playChanged, onTick, onDelete }) => {
   const [interval, setInter] = useState(null);
 
   useEffect(() => {
@@ -34,6 +34,11 @@ function Stopwatch({ value, play, playChanged, onTick }) {
     onTick(0);
   };
 
+  const _deleteStopwatch = () => {
+    _setPlay(false);
+    onDelete();
+  };
+
   const _formatValue = (value) => {
     let secNum = parseInt(value, 10);
     let hours = Math.floor(secNum / 3600);
@@ -55,6 +60,9 @@ function Stopwatch({ value, play, playChanged, onTick }) {
 
   return (
     <div className="stopwatch">
+      <button className="stopwatch__delete" onClick={_deleteStopwatch}>
+        Delete
+      </button>
       <h3 className="stopwatch__value">{_formatValue(value)}</h3>
       <ul className="stopwatch__buttons">
         <li>
@@ -76,6 +84,6 @@ function Stopwatch({ value, play, playChanged, onTick }) {
       </ul>
     </div>
   );
-}
+};
 
 export default Stopwatch;

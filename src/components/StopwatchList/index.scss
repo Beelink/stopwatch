@@ -7,7 +7,7 @@
         padding: 16px;
         margin: 0;
 
-        li {
+        & > li {
             margin: 0 16px 16px 0;
 
             &:last-child {

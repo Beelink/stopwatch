@@ -21,7 +21,7 @@
     margin: 0;
     display: flex;
 
-    li {
+    & > li {
       margin-right: 8px;
 
       &:last-child {
@@ -37,11 +37,43 @@
     height: 50px;
     background: $back-color;
     cursor: pointer;
+    padding: 0;
 
     &--blue {
       background: $accent-color;
       color: #fff;
       border-color: $accent-color;
+    }
+  }
+
+  &__delete {
+    background: $back-color;
+    border: 1px solid $border-color;
+    border-radius: 50%;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    font-size: 0;
+    overflow: hidden;
+    cursor: pointer;
+
+    &::before, &::after {
+      content: "";
+      position: absolute;
+      width: 40px;
+      height: 1px;
+      background: $border-color;
+      left: calc(50% - 20px);
+      top: 50%;
+    }
+
+    &::after {
+      transform: rotate(45deg);
+    }
+
+    &::before {
+      transform: rotate(-45deg);
     }
   }
 }
