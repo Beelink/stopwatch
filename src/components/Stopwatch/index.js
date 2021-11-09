@@ -1,69 +1,70 @@
 import "./index.scss";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import cn from "classnames";
+import dateUtils from "../../utils/date";
 
-const Stopwatch = ({ value, play, playChanged, onTick, onDelete }) => {
+const Stopwatch = ({ value, play, onPlayChange, onTick, onDelete }) => {
   const [interval, setInter] = useState(null);
 
+  const savedCallback = useRef();
+
   useEffect(() => {
-    if (play) {
-      _setPlay(true);
-    }
-  }, []);
+    savedCallback.current = onTick;
+  }, [onTick]);
+
+  useEffect(() => {
+    _setPlay(play);
+    
+    return () => {
+      _setPlay(false);
+    };
+  }, [play]);
 
   const _setPlay = (p) => {
+    _clearInterval();
     if (p) {
       setInter(
         setInterval(() => {
-          onTick(value++);
+          _tick(value++);
         }, 1000)
       );
-    } else {
-      clearInterval(interval);
-      setInter(null);
     }
-    playChanged(p);
   };
 
   const _togglePlay = () => {
-    _setPlay(!play);
+    onPlayChange(!play);
   };
 
   const _resetStopwatch = () => {
-    _setPlay(false);
-    onTick(0);
+    _tick(0);
   };
 
   const _deleteStopwatch = () => {
-    _setPlay(false);
+    _clearInterval();
     onDelete();
   };
 
-  const _formatValue = (value) => {
-    let secNum = parseInt(value, 10);
-    let hours = Math.floor(secNum / 3600);
-    let minutes = Math.floor((secNum - hours * 3600) / 60);
-    let seconds = secNum - hours * 3600 - minutes * 60;
+  const _tick = (v) => {
+    savedCallback.current(v);
+  };
 
-    if (hours < 10) {
-      hours = "0" + hours;
+  const _clearInterval = () => {
+    if (interval) {
+      clearInterval(interval);
+      setInter(null);
     }
-    if (minutes < 10) {
-      minutes = "0" + minutes;
-    }
-    if (seconds < 10) {
-      seconds = "0" + seconds;
-    }
-
-    return hours + ":" + minutes + ":" + seconds;
   };
 
   return (
     <div className="stopwatch">
-      <button className="stopwatch__delete" onClick={_deleteStopwatch}>
+      <button
+        title="Delete stopwatch"
+        className="stopwatch__delete"
+        onClick={_deleteStopwatch}
+      >
         Delete
       </button>
-      <h3 className="stopwatch__value">{_formatValue(value)}</h3>
+      <h3 className="stopwatch__value">{dateUtils.formatValue(value)}</h3>
       <ul className="stopwatch__buttons">
         <li>
           <button
@@ -77,7 +78,11 @@ const Stopwatch = ({ value, play, playChanged, onTick, onDelete }) => {
           </button>
         </li>
         <li>
-          <button className="stopwatch__button" onClick={_resetStopwatch}>
+          <button
+            disabled={!play}
+            className="stopwatch__button"
+            onClick={_resetStopwatch}
+          >
             <span>Reset</span>
           </button>
         </li>

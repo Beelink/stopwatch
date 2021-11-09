@@ -1,18 +1,18 @@
 .stopwatch-list {
-    &__list {
-        list-style: none;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        padding: 16px;
-        margin: 0;
+  &__list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 16px;
+    margin: 0;
 
-        & > li {
-            margin: 0 16px 16px 0;
+    & > li {
+      margin: 0 16px 16px 0;
 
-            &:last-child {
-                margin-right: 0;
-            }
-        }
+      &:last-child {
+        margin-right: 0;
+      }
     }
+  }
 }

@@ -1,16 +1,21 @@
 import "./index.scss";
-import React, { forwardRef, useState, useImperativeHandle } from "react";
+import React, {
+  forwardRef,
+  useState,
+  useImperativeHandle,
+  useEffect,
+} from "react";
 import Stopwatch from "../Stopwatch";
 
-const StopwatchList = forwardRef(({}, ref) => {
-  const [stopwatches, setStopwatches] = useState([
-    {
-      id: 0,
-      value: 0,
-      play: false,
-      syncStamp: null,
-    },
-  ]);
+const StopwatchList = forwardRef((props, ref) => {
+  const [stopwatches, setStopwatches] = useState([]);
+
+  useEffect(() => {
+    if (stopwatches.length) {
+    } else {
+      setStopwatches([_generateStopwatchData()]);
+    }
+  }, []);
 
   useImperativeHandle(ref, () => ({
     addStopwatch() {
@@ -18,14 +23,18 @@ const StopwatchList = forwardRef(({}, ref) => {
     },
   }));
 
-  const _addStopwatch = () => {
-    let newArr = [...stopwatches];
-    newArr.unshift({
+  const _generateStopwatchData = () => {
+    return {
       id: new Date().valueOf(),
       value: 0,
       play: false,
-      syncStamp: null,
-    });
+      // syncStamp: null,
+    };
+  };
+
+  const _addStopwatch = () => {
+    let newArr = [...stopwatches];
+    newArr.push(_generateStopwatchData());
     setStopwatches(newArr);
   };
 
@@ -60,24 +69,30 @@ const StopwatchList = forwardRef(({}, ref) => {
   return (
     <div className="stopwatch-list">
       <ul className="stopwatch-list__list">
-        {stopwatches.map((stopwatch) => {
-          return (
-            <li key={stopwatch.id}>
-              <Stopwatch
-                {...stopwatch}
-                onTick={(value) => {
-                  _updateStopwatchValue(stopwatch.id, value);
-                }}
-                playChanged={(value) => {
-                  _updateStopwatchPlay(stopwatch.id, value);
-                }}
-                onDelete={() => {
-                  _deleteStopwatch(stopwatch.id);
-                }}
-              />
-            </li>
-          );
-        })}
+        {stopwatches.length ? (
+          stopwatches.map((stopwatch) => {
+            return (
+              <li key={stopwatch.id}>
+                <Stopwatch
+                  {...stopwatch}
+                  onTick={(value) => {
+                    _updateStopwatchValue(stopwatch.id, value);
+                  }}
+                  onPlayChange={(value) => {
+                    _updateStopwatchPlay(stopwatch.id, value);
+                  }}
+                  onDelete={() => {
+                    _deleteStopwatch(stopwatch.id);
+                  }}
+                />
+              </li>
+            );
+          })
+        ) : (
+          <span className="stopwatch-list__empty">
+            No stopwatches, try to create one
+          </span>
+        )}
       </ul>
     </div>
   );
