@@ -33,6 +33,10 @@ const HistoryTable = ({ history, setHistory }) => {
     }
   };
 
+  const _clearHistory = () => {
+    setHistory([]);
+  };
+
   const _compare = (a, b) => {
     if (sort) {
       const s = sort.substr(0, sort.indexOf("_"));
@@ -145,6 +149,9 @@ const HistoryTable = ({ history, setHistory }) => {
             );
           })}
         </ul>
+        <div className="history-table__footer">
+          <button onClick={_clearHistory}>Clear history</button>
+        </div>
       </div>
     );
   } else {

@@ -57,9 +57,13 @@ const stopwatchReducer = (state = initialState, action) => {
         stopwatches: action.payload.stopwatches,
       };
     case ADD_STOPWATCH_TO_HISTORY:
+      const item = action.payload.data;
+      if (!item.finish) {
+        item.finish = new Date().valueOf();
+      }
       return {
         ...state,
-        history: [action.payload.data, ...state.history],
+        history: [item, ...state.history],
       };
     case SET_HISTORY:
       return {
