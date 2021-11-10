@@ -8,6 +8,7 @@ import cn from "classnames";
 
 const HistoryTable = ({ history, setHistory }) => {
   const [sort, setSort] = useState(null);
+  const [sortedHistory, setSortedHistory] = useState(history);
 
   useEffect(() => {
     const h = localStorageUtils.loadHistory();
@@ -23,7 +24,7 @@ const HistoryTable = ({ history, setHistory }) => {
   const _toggleSort = (s) => {
     if (sort && sort.startsWith(s)) {
       if (sort.endsWith("asc")) {
-        setSort(s + "_desc")
+        setSort(s + "_desc");
       } else if (sort.endsWith("desc")) {
         setSort(null);
       }
@@ -32,9 +33,42 @@ const HistoryTable = ({ history, setHistory }) => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log(sort)
-  // }, [sort])
+  const _compare = (a, b) => {
+    if (sort) {
+      const s = sort.substr(0, sort.indexOf("_"));
+      if (a[s].toLowerCase() < b[s].toLowerCase()) {
+        if (sort.endsWith("asc")) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+      if (a[s].toLowerCase() > b[s].toLowerCase()) {
+        if (sort.endsWith("asc")) {
+          return 1;
+        } else {
+          return -1;
+        }
+      }
+    }
+    return 0;
+  };
+
+  useEffect(() => {
+    if (history) {
+      const h = history.map((item) => {
+        return {
+          description: item.description || "",
+          start: dateUtils.formatDate(item.start),
+          value: dateUtils.formatValue(item.value),
+          finish: dateUtils.formatDate(item.finish),
+        };
+      });
+      setSortedHistory(h.sort(_compare));
+    } else {
+      setSortedHistory(history);
+    }
+  }, [sort, history]);
 
   if (history && history.length > 0) {
     return (
@@ -43,13 +77,13 @@ const HistoryTable = ({ history, setHistory }) => {
           <li className="history-table__row" key={0}>
             <button
               onClick={() => {
-                _toggleSort("title");
+                _toggleSort("description");
               }}
               className={cn({
                 "history-table__col": true,
                 "history-table__col--head": true,
-                "history-table__col--asc": sort === "title_asc",
-                "history-table__col--desc": sort === "title_desc",
+                "history-table__col--asc": sort === "description_asc",
+                "history-table__col--desc": sort === "description_desc",
               })}
             >
               Title
@@ -91,10 +125,10 @@ const HistoryTable = ({ history, setHistory }) => {
                 "history-table__col--desc": sort === "finish_desc",
               })}
             >
-              End time
+              Stop time
             </button>
           </li>
-          {history.map((item, index) => {
+          {sortedHistory.map((item, index) => {
             return (
               <li className="history-table__row" key={index + 1}>
                 {item.description ? (
@@ -104,15 +138,9 @@ const HistoryTable = ({ history, setHistory }) => {
                     No description
                   </span>
                 )}
-                <span className="history-table__col">
-                  {dateUtils.formatDate(item.start)}
-                </span>
-                <span className="history-table__col">
-                  {dateUtils.formatValue(item.value)}
-                </span>
-                <span className="history-table__col">
-                  {dateUtils.formatDate(item.finish)}
-                </span>
+                <span className="history-table__col">{item.start}</span>
+                <span className="history-table__col">{item.value}</span>
+                <span className="history-table__col">{item.finish}</span>
               </li>
             );
           })}
