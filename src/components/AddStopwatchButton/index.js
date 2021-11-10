@@ -1,19 +1,11 @@
 import "./index.scss";
 import { connect } from "react-redux";
-
 import { addStopwatch } from "../../store/actions/stopwatch";
+import stopwatchUtils from "../../utils/stopwatch";
 
-const AddStopwatchButton = (props) => {
-  const _generateStopwatchData = () => {
-    return {
-      id: new Date().valueOf(),
-      value: 0,
-      play: false,
-    };
-  };
-
+const AddStopwatchButton = ({ addStopwatch }) => {
   const _addStopwatch = () => {
-    props.addStopwatch(_generateStopwatchData());
+    addStopwatch(stopwatchUtils.generateNewStopwatch());
   };
 
   return (

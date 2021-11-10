@@ -4,6 +4,8 @@ import {
   ADD_STOPWATCH,
   REMOVE_STOPWATCH,
   UPDATE_STOPWATCH_VALUE,
+  PLAY_STOPWATCH,
+  SET_STOPWATCHES,
 } from "../types/stopwatch";
 
 const stopwatchReducer = (state = initialState, action) => {
@@ -25,10 +27,25 @@ const stopwatchReducer = (state = initialState, action) => {
         ...state,
         stopwatches: state.stopwatches.map((stopwatch) => {
           if (stopwatch.id === action.payload.id) {
-            stopwatch.value = stopwatch.payload.value;
+            stopwatch.value = action.payload.value;
           }
           return stopwatch;
         }),
+      };
+    case PLAY_STOPWATCH:
+      return {
+        ...state,
+        stopwatches: state.stopwatches.map((stopwatch) => {
+          if (stopwatch.id === action.payload.id) {
+            stopwatch.play = action.payload.play;
+          }
+          return stopwatch;
+        }),
+      };
+    case SET_STOPWATCHES:
+      return {
+        ...state,
+        stopwatches: action.payload.stopwatches,
       };
     default:
       return state;

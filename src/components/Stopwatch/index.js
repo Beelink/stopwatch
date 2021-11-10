@@ -1,52 +1,55 @@
 import "./index.scss";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import cn from "classnames";
 import dateUtils from "../../utils/date";
+import {
+  removeStopwatch,
+  playStopwatch,
+  updateStopwatchValue,
+} from "../../store/actions/stopwatch";
+import { connect } from "react-redux";
 
-const Stopwatch = ({ value, play, onPlayChange, onTick, onDelete }) => {
+const Stopwatch = ({
+  id,
+  value,
+  play,
+  removeStopwatch,
+  playStopwatch,
+  updateStopwatchValue,
+}) => {
   const [interval, setInter] = useState(null);
 
-  const savedCallback = useRef();
-
   useEffect(() => {
-    savedCallback.current = onTick;
-  }, [onTick]);
+    _enableCounter(play);
 
-  useEffect(() => {
-    _setPlay(play);
-    
     return () => {
-      _setPlay(false);
+      _enableCounter(false);
     };
   }, [play]);
 
-  const _setPlay = (p) => {
+  const _enableCounter = (enable) => {
     _clearInterval();
-    if (p) {
+    if (enable) {
       setInter(
         setInterval(() => {
-          _tick(value++);
+          updateStopwatchValue(id, value++);
         }, 1000)
       );
     }
   };
 
   const _togglePlay = () => {
-    onPlayChange(!play);
+    playStopwatch(id, !play);
   };
 
   const _resetStopwatch = () => {
-    _tick(0);
-    onPlayChange(false);
+    updateStopwatchValue(id, 0);
+    playStopwatch(id, false);
   };
 
-  const _deleteStopwatch = () => {
+  const _removeStopwatch = () => {
     _clearInterval();
-    onDelete();
-  };
-
-  const _tick = (v) => {
-    savedCallback.current(v);
+    removeStopwatch(id);
   };
 
   const _clearInterval = () => {
@@ -61,7 +64,7 @@ const Stopwatch = ({ value, play, onPlayChange, onTick, onDelete }) => {
       <button
         title="Delete stopwatch"
         className="stopwatch__delete"
-        onClick={_deleteStopwatch}
+        onClick={_removeStopwatch}
       >
         Delete
       </button>
@@ -92,4 +95,13 @@ const Stopwatch = ({ value, play, onPlayChange, onTick, onDelete }) => {
   );
 };
 
-export default Stopwatch;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeStopwatch: (id) => dispatch(removeStopwatch(id)),
+    playStopwatch: (id, play) => dispatch(playStopwatch(id, play)),
+    updateStopwatchValue: (id, value) =>
+      dispatch(updateStopwatchValue(id, value)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Stopwatch);

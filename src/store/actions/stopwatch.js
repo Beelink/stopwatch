@@ -1,4 +1,10 @@
-import { ADD_STOPWATCH, REMOVE_STOPWATCH } from "../types/stopwatch";
+import {
+  ADD_STOPWATCH,
+  REMOVE_STOPWATCH,
+  UPDATE_STOPWATCH_VALUE,
+  PLAY_STOPWATCH,
+  SET_STOPWATCHES,
+} from "../types/stopwatch";
 
 export const addStopwatch = (data) => {
   return {
@@ -20,10 +26,29 @@ export const removeStopwatch = (id) => {
 
 export const updateStopwatchValue = (id, value) => {
   return {
-    type: REMOVE_STOPWATCH,
+    type: UPDATE_STOPWATCH_VALUE,
     payload: {
       id,
       value,
+    },
+  };
+};
+
+export const playStopwatch = (id, play) => {
+  return {
+    type: PLAY_STOPWATCH,
+    payload: {
+      id,
+      play,
+    },
+  };
+};
+
+export const setStopwatches = (stopwatches) => {
+  return {
+    type: SET_STOPWATCHES,
+    payload: {
+      stopwatches,
     },
   };
 };

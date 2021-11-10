@@ -1,19 +1,15 @@
+import { connect } from "react-redux";
 import "./index.scss";
-import React, {
-  forwardRef,
-  useState,
-  useImperativeHandle,
-  useEffect,
-} from "react";
 import Stopwatch from "../Stopwatch";
+import React, { useEffect } from "react";
 import localStorageUtils from "../../utils/localStorage";
+import stopwatchUtils from "../../utils/stopwatch";
+import { setStopwatches } from "../../store/actions/stopwatch";
 
-const StopwatchList = forwardRef((props, ref) => {
-  const [stopwatches, setStopwatches] = useState([]);
-
+const StopwatchList = ({ stopwatches, setStopwatches }) => {
   useEffect(() => {
     const sw = localStorageUtils.loadStopwatches();
-    if (sw.length) {
+    if (sw && sw.length) {
       sw.map((value) => {
         if (value.syncStamp) {
           if (value.play) {
@@ -24,7 +20,7 @@ const StopwatchList = forwardRef((props, ref) => {
       });
       setStopwatches(sw);
     } else {
-      setStopwatches([_generateStopwatchData()]);
+      setStopwatches([stopwatchUtils.generateNewStopwatch()]);
     }
   }, []);
 
@@ -32,74 +28,15 @@ const StopwatchList = forwardRef((props, ref) => {
     localStorageUtils.saveStopwatches(stopwatches);
   }, [stopwatches]);
 
-  useImperativeHandle(ref, () => ({
-    addStopwatch() {
-      _addStopwatch();
-    },
-  }));
-
-  const _generateStopwatchData = () => {
-    return {
-      id: new Date().valueOf(),
-      value: 0,
-      play: false,
-      syncStamp: null,
-    };
-  };
-
-  const _addStopwatch = () => {
-    let newArr = [...stopwatches];
-    newArr.push(_generateStopwatchData());
-    setStopwatches(newArr);
-  };
-
-  const _updateStopwatchPlay = (id, value) => {
-    let newArr = [...stopwatches];
-    newArr = newArr.map((item) => {
-      if (item.id === id) {
-        item.play = value;
-      }
-      return item;
-    });
-    setStopwatches(newArr);
-  };
-
-  const _updateStopwatchValue = (id, value) => {
-    let newArr = [...stopwatches];
-    newArr = newArr.map((item) => {
-      if (item.id === id) {
-        item.value = value;
-        item.syncStamp = new Date().valueOf();
-      }
-      return item;
-    });
-    setStopwatches(newArr);
-  };
-
-  const _deleteStopwatch = (id) => {
-    let newArr = [...stopwatches];
-    newArr = newArr.filter((value) => value.id !== id);
-    setStopwatches(newArr);
-  };
-
   return (
     <div className="stopwatch-list">
       <ul className="stopwatch-list__list">
-        {stopwatches.length ? (
+        {stopwatches && stopwatches.length ? (
           stopwatches.map((stopwatch) => {
             return (
               <li key={stopwatch.id}>
                 <Stopwatch
                   {...stopwatch}
-                  onTick={(value) => {
-                    _updateStopwatchValue(stopwatch.id, value);
-                  }}
-                  onPlayChange={(value) => {
-                    _updateStopwatchPlay(stopwatch.id, value);
-                  }}
-                  onDelete={() => {
-                    _deleteStopwatch(stopwatch.id);
-                  }}
                 />
               </li>
             );
@@ -112,6 +49,18 @@ const StopwatchList = forwardRef((props, ref) => {
       </ul>
     </div>
   );
-});
+};
 
-export default StopwatchList;
+const mapStateToProps = (state) => {
+  return {
+    stopwatches: state.stopwatch.stopwatches,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setStopwatches: (stopwatches) => dispatch(setStopwatches(stopwatches)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StopwatchList);
