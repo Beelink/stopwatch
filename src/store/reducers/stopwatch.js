@@ -7,7 +7,7 @@ import {
   PLAY_STOPWATCH,
   SET_STOPWATCHES,
   ADD_STOPWATCH_TO_HISTORY,
-  CLEAR_HISTORY,
+  SET_HISTORY,
 } from "../types/stopwatch";
 
 const stopwatchReducer = (state = initialState, action) => {
@@ -45,7 +45,7 @@ const stopwatchReducer = (state = initialState, action) => {
                 stopwatch.start = new Date().valueOf();
               }
             } else {
-              stopwatch.end = new Date().valueOf();
+              stopwatch.finish = new Date().valueOf();
             }
           }
           return stopwatch;
@@ -59,12 +59,12 @@ const stopwatchReducer = (state = initialState, action) => {
     case ADD_STOPWATCH_TO_HISTORY:
       return {
         ...state,
-        history: [...state.history, action.payload.data],
+        history: [action.payload.data, ...state.history],
       };
-    case CLEAR_HISTORY:
+    case SET_HISTORY:
       return {
         ...state,
-        history: [],
+        history: action.payload.history,
       };
     default:
       return state;

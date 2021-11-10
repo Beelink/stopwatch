@@ -9,6 +9,16 @@ const locStorage = {
     }
     return stopwatches;
   },
+  saveHistory: (history) => {
+    localStorage.setItem("history", JSON.stringify(history));
+  },
+  loadHistory: () => {
+    let history = [];
+    if (localStorage.getItem("history")) {
+      history = JSON.parse(localStorage.getItem("history"));
+    }
+    return history;
+  },
 };
 
 export default locStorage;

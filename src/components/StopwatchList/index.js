@@ -22,7 +22,7 @@ const StopwatchList = ({ stopwatches, setStopwatches }) => {
       });
       setStopwatches(sw);
     } else {
-      // setStopwatches([stopwatchUtils.generateNewStopwatch()]);
+      setStopwatches([stopwatchUtils.generateNewStopwatch()]);
     }
   }, []);
 

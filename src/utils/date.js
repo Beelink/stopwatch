@@ -16,6 +16,9 @@ const date = {
 
     return hours + ":" + minutes + ":" + seconds;
   },
+  formatDate: (ms) => {
+    return new Date(ms).toLocaleString();
+  },
 };
 
 export default date;

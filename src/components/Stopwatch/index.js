@@ -16,6 +16,7 @@ const Stopwatch = ({
   play,
   description,
   start,
+  finish,
   removeStopwatch,
   playStopwatch,
   updateStopwatchValue,
@@ -42,31 +43,30 @@ const Stopwatch = ({
     }
   };
 
+  const _addStopwatchToHistory = () => {
+    if (value > 0) {
+      addStopwatchToHistory({
+        description,
+        start,
+        value,
+        finish,
+      });
+    }
+  };
+
   const _togglePlay = () => {
     playStopwatch(id, !play);
   };
 
   const _resetStopwatch = () => {
-    if (value > 0) {
-      addStopwatchToHistory({
-        description,
-        start,
-        value,
-      });
-    }
     updateStopwatchValue(id, 0);
     playStopwatch(id, false);
+    _addStopwatchToHistory();
   };
 
   const _removeStopwatch = () => {
-    if (value > 0) {
-      addStopwatchToHistory({
-        description,
-        start,
-        value,
-      });
-    }
     playStopwatch(id, false);
+    _addStopwatchToHistory();
     removeStopwatch(id);
   };
 
@@ -87,6 +87,11 @@ const Stopwatch = ({
         Delete
       </button>
       <h3 className="stopwatch__value">{dateUtils.formatValue(value)}</h3>
+      {description ? (
+        <h4 className="stopwatch__description">{description}</h4>
+      ) : (
+        <h4 className="stopwatch__description stopwatch__description--empty">No description</h4>
+      )}
       <ul className="stopwatch__buttons">
         <li>
           <button

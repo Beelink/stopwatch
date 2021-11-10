@@ -20,9 +20,44 @@
 
   &__col {
     flex: 1;
+    border: none;
     border-right: 1px solid $border-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 16px;
+
+    &--head {
+      background: $back-color;
+      cursor: pointer;
+      transition: background $transition-duration,
+        border-color $transition-duration;
+
+      &:hover {
+        background: $back-hover-color;
+      }
+    }
+
+    &--asc,
+    &--desc {
+      background: $accent-color;
+      color: #fff;
+      border-color: $accent-color;
+
+      &:hover {
+        background: $accent-hover-color;
+        border-color: $accent-hover-color;
+      }
+    }
+
+    &--asc {
+      color: red;
+    }
+
+    &--desc {
+      color: blue;
+    }
 
     &--empty {
       color: $border-color;
