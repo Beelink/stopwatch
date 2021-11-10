@@ -6,6 +6,7 @@ import {
   removeStopwatch,
   playStopwatch,
   updateStopwatchValue,
+  addStopwatchToHistory,
 } from "../../store/actions/stopwatch";
 import { connect } from "react-redux";
 
@@ -13,9 +14,12 @@ const Stopwatch = ({
   id,
   value,
   play,
+  description,
+  start,
   removeStopwatch,
   playStopwatch,
   updateStopwatchValue,
+  addStopwatchToHistory,
 }) => {
   const [interval, setInter] = useState(null);
 
@@ -43,12 +47,26 @@ const Stopwatch = ({
   };
 
   const _resetStopwatch = () => {
+    if (value > 0) {
+      addStopwatchToHistory({
+        description,
+        start,
+        value,
+      });
+    }
     updateStopwatchValue(id, 0);
     playStopwatch(id, false);
   };
 
   const _removeStopwatch = () => {
-    _clearInterval();
+    if (value > 0) {
+      addStopwatchToHistory({
+        description,
+        start,
+        value,
+      });
+    }
+    playStopwatch(id, false);
     removeStopwatch(id);
   };
 
@@ -101,6 +119,7 @@ const mapDispatchToProps = (dispatch) => {
     playStopwatch: (id, play) => dispatch(playStopwatch(id, play)),
     updateStopwatchValue: (id, value) =>
       dispatch(updateStopwatchValue(id, value)),
+    addStopwatchToHistory: (data) => dispatch(addStopwatchToHistory(data)),
   };
 };
 

@@ -4,6 +4,8 @@ import {
   UPDATE_STOPWATCH_VALUE,
   PLAY_STOPWATCH,
   SET_STOPWATCHES,
+  ADD_STOPWATCH_TO_HISTORY,
+  CLEAR_HISTORY,
 } from "../types/stopwatch";
 
 export const addStopwatch = (data) => {
@@ -50,5 +52,20 @@ export const setStopwatches = (stopwatches) => {
     payload: {
       stopwatches,
     },
+  };
+};
+
+export const addStopwatchToHistory = (data) => {
+  return {
+    type: ADD_STOPWATCH_TO_HISTORY,
+    payload: {
+      data,
+    },
+  };
+};
+
+export const clearHistory = () => {
+  return {
+    type: CLEAR_HISTORY,
   };
 };

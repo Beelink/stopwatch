@@ -6,6 +6,8 @@ import {
   UPDATE_STOPWATCH_VALUE,
   PLAY_STOPWATCH,
   SET_STOPWATCHES,
+  ADD_STOPWATCH_TO_HISTORY,
+  CLEAR_HISTORY,
 } from "../types/stopwatch";
 
 const stopwatchReducer = (state = initialState, action) => {
@@ -38,6 +40,13 @@ const stopwatchReducer = (state = initialState, action) => {
         stopwatches: state.stopwatches.map((stopwatch) => {
           if (stopwatch.id === action.payload.id) {
             stopwatch.play = action.payload.play;
+            if (action.payload.play) {
+              if (!stopwatch.start) {
+                stopwatch.start = new Date().valueOf();
+              }
+            } else {
+              stopwatch.end = new Date().valueOf();
+            }
           }
           return stopwatch;
         }),
@@ -46,6 +55,16 @@ const stopwatchReducer = (state = initialState, action) => {
       return {
         ...state,
         stopwatches: action.payload.stopwatches,
+      };
+    case ADD_STOPWATCH_TO_HISTORY:
+      return {
+        ...state,
+        history: [...state.history, action.payload.data],
+      };
+    case CLEAR_HISTORY:
+      return {
+        ...state,
+        history: [],
       };
     default:
       return state;

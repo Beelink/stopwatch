@@ -13,14 +13,16 @@ const StopwatchList = ({ stopwatches, setStopwatches }) => {
       sw.map((value) => {
         if (value.syncStamp) {
           if (value.play) {
-            value.value += Math.round((new Date().valueOf() - value.syncStamp) / 1000);
+            value.value += Math.round(
+              (new Date().valueOf() - value.syncStamp) / 1000
+            );
           }
         }
         return value;
       });
       setStopwatches(sw);
     } else {
-      setStopwatches([stopwatchUtils.generateNewStopwatch()]);
+      // setStopwatches([stopwatchUtils.generateNewStopwatch()]);
     }
   }, []);
 
@@ -31,13 +33,11 @@ const StopwatchList = ({ stopwatches, setStopwatches }) => {
   return (
     <div className="stopwatch-list">
       <ul className="stopwatch-list__list">
-        {stopwatches && stopwatches.length ? (
+        {stopwatches && stopwatches.length > 0 ? (
           stopwatches.map((stopwatch) => {
             return (
               <li key={stopwatch.id}>
-                <Stopwatch
-                  {...stopwatch}
-                />
+                <Stopwatch {...stopwatch} />
               </li>
             );
           })

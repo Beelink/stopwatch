@@ -40,6 +40,7 @@
     height: 50px;
     background: $back-color;
     cursor: pointer;
+    outline-color: $outline-color;
     padding: 0;
     transition: background $transition-duration,
       border-color $transition-duration;
@@ -76,6 +77,7 @@
     overflow: hidden;
     cursor: pointer;
     transition: background $transition-duration;
+    outline-color: $outline-color;
 
     &:hover {
       background: $back-hover-color;
