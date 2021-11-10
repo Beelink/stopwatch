@@ -6,16 +6,31 @@ import React, {
   useEffect,
 } from "react";
 import Stopwatch from "../Stopwatch";
+import localStorageUtils from "../../utils/localStorage";
 
 const StopwatchList = forwardRef((props, ref) => {
   const [stopwatches, setStopwatches] = useState([]);
 
   useEffect(() => {
-    if (stopwatches.length) {
+    const sw = localStorageUtils.loadStopwatches();
+    if (sw.length) {
+      sw.map((value) => {
+        if (value.syncStamp) {
+          if (value.play) {
+            value.value += Math.round((new Date().valueOf() - value.syncStamp) / 1000);
+          }
+        }
+        return value;
+      });
+      setStopwatches(sw);
     } else {
       setStopwatches([_generateStopwatchData()]);
     }
   }, []);
+
+  useEffect(() => {
+    localStorageUtils.saveStopwatches(stopwatches);
+  }, [stopwatches]);
 
   useImperativeHandle(ref, () => ({
     addStopwatch() {
@@ -28,7 +43,7 @@ const StopwatchList = forwardRef((props, ref) => {
       id: new Date().valueOf(),
       value: 0,
       play: false,
-      // syncStamp: null,
+      syncStamp: null,
     };
   };
 
@@ -54,6 +69,7 @@ const StopwatchList = forwardRef((props, ref) => {
     newArr = newArr.map((item) => {
       if (item.id === id) {
         item.value = value;
+        item.syncStamp = new Date().valueOf();
       }
       return item;
     });

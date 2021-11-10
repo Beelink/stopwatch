@@ -37,6 +37,7 @@ const Stopwatch = ({ value, play, onPlayChange, onTick, onDelete }) => {
 
   const _resetStopwatch = () => {
     _tick(0);
+    onPlayChange(false);
   };
 
   const _deleteStopwatch = () => {
