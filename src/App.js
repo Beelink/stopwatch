@@ -1,19 +1,17 @@
+import { Provider } from "react-redux";
+import store from "./store";
+
 import StopwatchList from "./components/StopwatchList";
 import AddStopwatchButton from "./components/AddStopwatchButton";
-import React, { useRef } from "react";
 
 function App() {
-  const stopwatchList = useRef(null);
-
-  const _addStopwatch = () => {
-    stopwatchList.current.addStopwatch();
-  };
-
   return (
-    <div className="app">
-      <AddStopwatchButton onClick={_addStopwatch} />
-      <StopwatchList ref={stopwatchList} />
-    </div>
+    <Provider store={store}>
+      <div className="app">
+        <AddStopwatchButton />
+        <StopwatchList />
+      </div>
+    </Provider>
   );
 }
 
