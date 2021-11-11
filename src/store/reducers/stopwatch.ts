@@ -1,5 +1,5 @@
-import { State } from "../../types/state";
-import initialState from "../initialState";
+import { StopwatchState } from "../../types/state";
+import stopwatchInitialState from "../initialStates/stopwatch";
 
 import {
   ADD_STOPWATCH,
@@ -13,9 +13,9 @@ import {
 import { StopwatchAction } from "../actionTypes/stopwatch";
 
 const stopwatchReducer = (
-  state: State = initialState,
+  state: StopwatchState = stopwatchInitialState,
   action: StopwatchAction
-): State => {
+): StopwatchState => {
   switch (action.type) {
     case ADD_STOPWATCH:
       return {

@@ -1,6 +1,6 @@
 import "./index.scss";
 import { connect } from "react-redux";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { addStopwatch } from "../../store/actions/stopwatch";
 import stopwatchUtils from "../../utils/stopwatch";
 

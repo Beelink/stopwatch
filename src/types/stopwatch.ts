@@ -5,4 +5,5 @@ export type Stopwatch = {
   description: string;
   start: number | null;
   finish: number | null;
+  syncStamp: number | null;
 };

@@ -2,7 +2,7 @@ import "./index.scss";
 import { connect } from "react-redux";
 import { setHistory } from "../../store/actions/stopwatch";
 import dateUtils from "../../utils/date";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import localStorageUtils from "../../utils/localStorage";
 import cn from "classnames";
 
