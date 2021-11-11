@@ -1,15 +1,20 @@
 import "./index.scss";
-import { connect } from "react-redux";
-import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { FunctionComponent, useRef } from "react";
 import { addStopwatch } from "../../store/actions/stopwatch";
 import stopwatchUtils from "../../utils/stopwatch";
 
-const AddStopwatchButton = ({ addStopwatch }) => {
-  const input = useRef();
+const AddStopwatchButton: FunctionComponent = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
 
   const _addStopwatch = () => {
-    addStopwatch(stopwatchUtils.generateNewStopwatch(input.current.value));
-    input.current.value = "";
+    if (inputRef.current) {
+      dispatch(
+        addStopwatch(stopwatchUtils.generateNewStopwatch(inputRef.current.value))
+      );
+      inputRef.current.value = "";
+    }
   };
 
   return (
@@ -17,7 +22,7 @@ const AddStopwatchButton = ({ addStopwatch }) => {
       <input
         className="add-stopwatch-button__input"
         type="text"
-        ref={input}
+        ref={inputRef}
         placeholder="Stopwatch description"
       />
       <button
@@ -31,10 +36,4 @@ const AddStopwatchButton = ({ addStopwatch }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addStopwatch: (data) => dispatch(addStopwatch(data)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(AddStopwatchButton);
+export default AddStopwatchButton;

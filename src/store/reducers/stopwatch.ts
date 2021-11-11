@@ -35,6 +35,7 @@ const stopwatchReducer = (
         stopwatches: state.stopwatches.map((stopwatch) => {
           if (stopwatch.id === action.payload.id) {
             stopwatch.value = action.payload.value;
+            stopwatch.syncStamp = new Date().valueOf();
           }
           return stopwatch;
         }),

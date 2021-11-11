@@ -1,5 +1,5 @@
 import "./index.scss";
-import { useState, useEffect, FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import cn from "classnames";
 import dateUtils from "../../utils/date";
 import {
@@ -10,6 +10,7 @@ import {
 } from "../../store/actions/stopwatch";
 import { Props } from "./props";
 import { useDispatch } from "react-redux";
+import useInterval from "use-interval";
 
 const Stopwatch: FunctionComponent<Props> = ({
   id,
@@ -20,26 +21,13 @@ const Stopwatch: FunctionComponent<Props> = ({
   finish,
 }) => {
   const dispatch = useDispatch();
-  const [interval, setInter] = useState<NodeJS.Timer | null>(null);
 
-  useEffect(() => {
-    _enableCounter(play);
-
-    return () => {
-      _enableCounter(false);
-    };
-  }, [play]);
-
-  const _enableCounter = (enable: boolean) => {
-    _clearInterval();
-    if (enable) {
-      setInter(
-        setInterval(() => {
-          dispatch(updateStopwatchValue(id, value));
-        }, 1000)
-      );
-    }
-  };
+  useInterval(
+    () => {
+      dispatch(updateStopwatchValue(id, value + 1));
+    },
+    play ? 1000 : null
+  );
 
   const _addStopwatchToHistory = () => {
     if (value > 0) {
@@ -68,13 +56,6 @@ const Stopwatch: FunctionComponent<Props> = ({
     dispatch(playStopwatch(id, false));
     _addStopwatchToHistory();
     dispatch(removeStopwatch(id));
-  };
-
-  const _clearInterval = () => {
-    if (interval) {
-      clearInterval(interval);
-      setInter(null);
-    }
   };
 
   return (
