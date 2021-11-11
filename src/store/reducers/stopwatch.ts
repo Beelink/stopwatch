@@ -1,3 +1,4 @@
+import { State } from "../../types/state";
 import initialState from "../initialState";
 
 import {
@@ -8,14 +9,18 @@ import {
   SET_STOPWATCHES,
   ADD_STOPWATCH_TO_HISTORY,
   SET_HISTORY,
-} from "../types/stopwatch";
+} from "../actionNames/stopwatch";
+import { StopwatchAction } from "../actionTypes/stopwatch";
 
-const stopwatchReducer = (state = initialState, action) => {
+const stopwatchReducer = (
+  state: State = initialState,
+  action: StopwatchAction
+): State => {
   switch (action.type) {
     case ADD_STOPWATCH:
       return {
         ...state,
-        stopwatches: [...state.stopwatches, action.payload.data],
+        stopwatches: [...state.stopwatches, action.payload.stopwatch],
       };
     case REMOVE_STOPWATCH:
       return {

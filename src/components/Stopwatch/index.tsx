@@ -8,16 +8,17 @@ import {
   updateStopwatchValue,
   addStopwatchToHistory,
 } from "../../store/actions/stopwatch";
+import { Props } from "./props";
 import { useDispatch } from "react-redux";
 
-const Stopwatch: FunctionComponent<{
-  id: number;
-  value: number;
-  play: boolean;
-  description: string;
-  start: number | null;
-  finish: number | null;
-}> = ({ id, value, play, description, start, finish }) => {
+const Stopwatch: FunctionComponent<Props> = ({
+  id,
+  value,
+  play,
+  description,
+  start,
+  finish,
+}) => {
   const dispatch = useDispatch();
   const [interval, setInter] = useState<NodeJS.Timer | null>(null);
 
