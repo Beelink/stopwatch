@@ -1,19 +1,23 @@
 import "./index.scss";
-import { connect } from "react-redux";
 import { setHistory } from "../../store/actions/stopwatch";
 import dateUtils from "../../utils/date";
-import { useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import localStorageUtils from "../../utils/localStorage";
 import cn from "classnames";
+import { useSelector, useDispatch } from "react-redux";
+import { GlobalState } from "../../types/state";
+import { SortableHistoryItem } from "./types";
 
-const HistoryTable = ({ history, setHistory }) => {
-  const [sort, setSort] = useState(null);
-  const [sortedHistory, setSortedHistory] = useState(history);
+const HistoryTable: FunctionComponent = () => {
+  const dispatch = useDispatch();
+  const history = useSelector((state: GlobalState) => state.stopwatch.history);
+  const [sort, setSort] = useState<string | null>(null);
+  const [sortedHistory, setSortedHistory] = useState<SortableHistoryItem[]>([]);
 
   useEffect(() => {
     const h = localStorageUtils.loadHistory();
     if (h && h.length) {
-      setHistory(h);
+      dispatch(setHistory(h));
     }
   }, []);
 
@@ -21,7 +25,7 @@ const HistoryTable = ({ history, setHistory }) => {
     localStorageUtils.saveHistory(history);
   }, [history]);
 
-  const _toggleSort = (s) => {
+  const _toggleSort = (s: string) => {
     if (sort && sort.startsWith(s)) {
       if (sort.endsWith("asc")) {
         setSort(s + "_desc");
@@ -34,20 +38,44 @@ const HistoryTable = ({ history, setHistory }) => {
   };
 
   const _clearHistory = () => {
-    setHistory([]);
+    dispatch(setHistory([]));
   };
 
-  const _compare = (a, b) => {
+  const _compare = (a: SortableHistoryItem, b: SortableHistoryItem) => {
     if (sort) {
       const s = sort.substr(0, sort.indexOf("_"));
-      if (a[s].toLowerCase() < b[s].toLowerCase()) {
+
+      let prop1: string = "";
+      let prop2: string = "";
+      switch (s) {
+        case "description":
+          prop1 = a.description;
+          prop2 = b.description;
+          break;
+        case "start":
+          prop1 = a.start;
+          prop2 = b.start;
+          break;
+        case "value":
+          prop1 = a.value;
+          prop2 = b.value;
+          break;
+        case "finish":
+          prop1 = a.finish;
+          prop2 = b.finish;
+          break;
+      }
+      prop1 = prop1.toLowerCase();
+      prop2 = prop2.toLowerCase();
+
+      if (prop1 < prop2) {
         if (sort.endsWith("asc")) {
           return -1;
         } else {
           return 1;
         }
       }
-      if (a[s].toLowerCase() > b[s].toLowerCase()) {
+      if (prop1 > prop2) {
         if (sort.endsWith("asc")) {
           return 1;
         } else {
@@ -159,16 +187,4 @@ const HistoryTable = ({ history, setHistory }) => {
   }
 };
 
-const mapStateToProps = (state) => {
-  return {
-    history: state.stopwatch.history,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setHistory: (history) => dispatch(setHistory(history)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HistoryTable);
+export default HistoryTable;

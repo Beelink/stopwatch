@@ -12,8 +12,12 @@ const dateUtils = {
       seconds
     )}`;
   },
-  formatDate: (ms: number): string => {
-    return new Date(ms).toLocaleString();
+  formatDate: (ms: number | null): string => {
+    if (ms) {
+      return new Date(ms).toLocaleString();
+    } else {
+      return "";
+    }
   },
 };
 
