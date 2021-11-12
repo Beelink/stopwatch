@@ -6,6 +6,7 @@ import {
   ADD_STOPWATCH,
   PLAY_STOPWATCH,
   REMOVE_STOPWATCH,
+  REQUEST_TIMER_FAIL,
   REQUEST_TIMER_START,
   REQUEST_TIMER_SUCCESS,
   SET_HISTORY,
@@ -86,6 +87,13 @@ export type RequestTimerSuccess = {
   };
 };
 
+export type RequestTimerFail = {
+  type: typeof REQUEST_TIMER_FAIL;
+  payload: {
+    id: number;
+  };
+};
+
 export type StopwatchAction =
   | AddStopwatchAction
   | RemoveStopwatchAction
@@ -96,4 +104,5 @@ export type StopwatchAction =
   | SetHistoryAction
   | SetHistorySortMethodAction
   | RequestTimerStart
-  | RequestTimerSuccess;
+  | RequestTimerSuccess
+  | RequestTimerFail;

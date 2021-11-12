@@ -12,6 +12,7 @@ import {
   ADD_HISTORY_ITEM,
   REQUEST_TIMER_START,
   REQUEST_TIMER_SUCCESS,
+  REQUEST_TIMER_FAIL,
 } from "./stopwatch.actions";
 
 export const addStopwatch = (stopwatch: Stopwatch) => {
@@ -100,6 +101,15 @@ export const requestTimerStart = (id: number) => {
 export const requestTimerSuccess = (id: number) => {
   return {
     type: REQUEST_TIMER_SUCCESS,
+    payload: {
+      id,
+    },
+  };
+};
+
+export const requestTimerFail = (id: number) => {
+  return {
+    type: REQUEST_TIMER_FAIL,
     payload: {
       id,
     },

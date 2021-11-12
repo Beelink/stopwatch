@@ -12,6 +12,7 @@ import {
   SET_HISTORY_SORT_METHOD,
   REQUEST_TIMER_START,
   REQUEST_TIMER_SUCCESS,
+  REQUEST_TIMER_FAIL,
 } from "./stopwatch.actions";
 import { StopwatchAction } from "./stopwatch.actionTypes";
 import historyUtils from "../../utils/history";
@@ -100,6 +101,16 @@ const stopwatchReducer = (
         }),
       };
     case REQUEST_TIMER_SUCCESS:
+      return {
+        ...state,
+        stopwatches: state.stopwatches.map((stopwatch) => {
+          if (stopwatch.id === action.payload.id) {
+            stopwatch.pending = false;
+          }
+          return stopwatch;
+        }),
+      };
+    case REQUEST_TIMER_FAIL:
       return {
         ...state,
         stopwatches: state.stopwatches.map((stopwatch) => {

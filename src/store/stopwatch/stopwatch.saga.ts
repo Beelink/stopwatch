@@ -1,6 +1,9 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 
-import { requestTimerSuccess } from "./stopwatch.actionCreators";
+import {
+  requestTimerSuccess,
+  requestTimerFail,
+} from "./stopwatch.actionCreators";
 import { REQUEST_TIMER_START } from "./stopwatch.actions";
 import timeoutUtils from "../../utils/timeout";
 import { RequestTimerStart } from "./stopwatch.actionTypes";
@@ -12,7 +15,7 @@ function* requestTimerStartWorker(action: RequestTimerStart) {
     yield call(_delay);
     yield put(requestTimerSuccess(action.payload.id));
   } catch (e) {
-    yield put(requestTimerSuccess(action.payload.id));
+    yield put(requestTimerFail(action.payload.id));
   }
 }
 
