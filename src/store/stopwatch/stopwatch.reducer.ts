@@ -1,5 +1,5 @@
 import { StopwatchState } from "../../types/state";
-import stopwatchInitialState from "../initialStates/stopwatch";
+import stopwatchInitialState from "./stopwatch.initialState";
 
 import {
   ADD_STOPWATCH,
@@ -9,8 +9,8 @@ import {
   SET_STOPWATCHES,
   ADD_STOPWATCH_TO_HISTORY,
   SET_HISTORY,
-} from "../actionNames/stopwatch";
-import { StopwatchAction } from "../actionTypes/stopwatch";
+} from "./stopwatch.actionNames";
+import { StopwatchAction } from "./stopwatch.actionTypes";
 
 const stopwatchReducer = (
   state: StopwatchState = stopwatchInitialState,

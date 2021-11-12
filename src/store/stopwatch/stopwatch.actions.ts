@@ -8,7 +8,7 @@ import {
   SET_STOPWATCHES,
   ADD_STOPWATCH_TO_HISTORY,
   SET_HISTORY,
-} from "../actionNames/stopwatch";
+} from "./stopwatch.actionNames";
 
 export const addStopwatch = (stopwatch: Stopwatch) => {
   return {

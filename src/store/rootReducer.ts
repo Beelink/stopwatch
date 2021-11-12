@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import stopwatchReducer from "./stopwatch";
+import stopwatchReducer from "./stopwatch/stopwatch.reducer";
 
 const rootReducer = combineReducers({
   stopwatch: stopwatchReducer,

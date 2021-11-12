@@ -1,5 +1,5 @@
 import "./index.scss";
-import { setHistory } from "../../store/actions/stopwatch";
+import { setHistory } from "../../store/stopwatch/stopwatch.actions";
 import dateUtils from "../../utils/date";
 import { FunctionComponent, useEffect, useState } from "react";
 import localStorageUtils from "../../utils/localStorage";

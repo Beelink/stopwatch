@@ -8,7 +8,7 @@ import {
   SET_HISTORY,
   SET_STOPWATCHES,
   UPDATE_STOPWATCH_VALUE,
-} from "../actionNames/stopwatch";
+} from "./stopwatch.actionNames";
 
 type AddStopwatchAction = {
   type: typeof ADD_STOPWATCH;

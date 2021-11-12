@@ -7,7 +7,7 @@ import {
   playStopwatch,
   updateStopwatchValue,
   addStopwatchToHistory,
-} from "../../store/actions/stopwatch";
+} from "../../store/stopwatch/stopwatch.actions";
 import { Props } from "./props";
 import { useDispatch } from "react-redux";
 import useInterval from "use-interval";
