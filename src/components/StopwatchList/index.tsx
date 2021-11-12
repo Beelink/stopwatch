@@ -1,12 +1,18 @@
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./index.scss";
 import Stopwatch from "../Stopwatch";
-import React, { useEffect } from "react";
+import { FunctionComponent, useEffect } from "react";
 import localStorageUtils from "../../utils/localStorage";
 import stopwatchUtils from "../../utils/stopwatch";
 import { setStopwatches } from "../../store/actions/stopwatch";
+import { GlobalState } from "../../types/state";
 
-const StopwatchList = ({ stopwatches, setStopwatches }) => {
+const StopwatchList: FunctionComponent = () => {
+  const dispatch = useDispatch();
+  const stopwatches = useSelector(
+    (state: GlobalState) => state.stopwatch.stopwatches
+  );
+
   useEffect(() => {
     const sw = localStorageUtils.loadStopwatches();
     if (sw && sw.length) {
@@ -20,9 +26,9 @@ const StopwatchList = ({ stopwatches, setStopwatches }) => {
         }
         return value;
       });
-      setStopwatches(sw);
+      dispatch(setStopwatches(sw));
     } else {
-      setStopwatches([stopwatchUtils.generateNewStopwatch()]);
+      dispatch(setStopwatches([stopwatchUtils.generateNewStopwatch("")]));
     }
   }, []);
 
@@ -51,16 +57,4 @@ const StopwatchList = ({ stopwatches, setStopwatches }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    stopwatches: state.stopwatch.stopwatches,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setStopwatches: (stopwatches) => dispatch(setStopwatches(stopwatches)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(StopwatchList);
+export default StopwatchList;

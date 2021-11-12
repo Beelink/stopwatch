@@ -1,4 +1,5 @@
-import initialState from "../initialState";
+import { StopwatchState } from "../../types/state";
+import stopwatchInitialState from "../initialStates/stopwatch";
 
 import {
   ADD_STOPWATCH,
@@ -8,14 +9,18 @@ import {
   SET_STOPWATCHES,
   ADD_STOPWATCH_TO_HISTORY,
   SET_HISTORY,
-} from "../types/stopwatch";
+} from "../actionNames/stopwatch";
+import { StopwatchAction } from "../actionTypes/stopwatch";
 
-const stopwatchReducer = (state = initialState, action) => {
+const stopwatchReducer = (
+  state: StopwatchState = stopwatchInitialState,
+  action: StopwatchAction
+): StopwatchState => {
   switch (action.type) {
     case ADD_STOPWATCH:
       return {
         ...state,
-        stopwatches: [...state.stopwatches, action.payload.data],
+        stopwatches: [...state.stopwatches, action.payload.stopwatch],
       };
     case REMOVE_STOPWATCH:
       return {
@@ -30,6 +35,7 @@ const stopwatchReducer = (state = initialState, action) => {
         stopwatches: state.stopwatches.map((stopwatch) => {
           if (stopwatch.id === action.payload.id) {
             stopwatch.value = action.payload.value;
+            stopwatch.syncStamp = new Date().valueOf();
           }
           return stopwatch;
         }),

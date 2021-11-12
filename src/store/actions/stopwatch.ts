@@ -1,3 +1,5 @@
+import { HistoryItem } from "../../types/historyItem";
+import { Stopwatch } from "../../types/stopwatch";
 import {
   ADD_STOPWATCH,
   REMOVE_STOPWATCH,
@@ -6,18 +8,18 @@ import {
   SET_STOPWATCHES,
   ADD_STOPWATCH_TO_HISTORY,
   SET_HISTORY,
-} from "../types/stopwatch";
+} from "../actionNames/stopwatch";
 
-export const addStopwatch = (data) => {
+export const addStopwatch = (stopwatch: Stopwatch) => {
   return {
     type: ADD_STOPWATCH,
     payload: {
-      data,
+      stopwatch,
     },
   };
 };
 
-export const removeStopwatch = (id) => {
+export const removeStopwatch = (id: number) => {
   return {
     type: REMOVE_STOPWATCH,
     payload: {
@@ -26,7 +28,7 @@ export const removeStopwatch = (id) => {
   };
 };
 
-export const updateStopwatchValue = (id, value) => {
+export const updateStopwatchValue = (id: number, value: number) => {
   return {
     type: UPDATE_STOPWATCH_VALUE,
     payload: {
@@ -36,7 +38,7 @@ export const updateStopwatchValue = (id, value) => {
   };
 };
 
-export const playStopwatch = (id, play) => {
+export const playStopwatch = (id: number, play: boolean) => {
   return {
     type: PLAY_STOPWATCH,
     payload: {
@@ -46,7 +48,7 @@ export const playStopwatch = (id, play) => {
   };
 };
 
-export const setStopwatches = (stopwatches) => {
+export const setStopwatches = (stopwatches: Stopwatch[]) => {
   return {
     type: SET_STOPWATCHES,
     payload: {
@@ -55,7 +57,7 @@ export const setStopwatches = (stopwatches) => {
   };
 };
 
-export const addStopwatchToHistory = (data) => {
+export const addStopwatchToHistory = (data: HistoryItem) => {
   return {
     type: ADD_STOPWATCH_TO_HISTORY,
     payload: {
@@ -64,7 +66,7 @@ export const addStopwatchToHistory = (data) => {
   };
 };
 
-export const setHistory = (history) => {
+export const setHistory = (history: HistoryItem[]) => {
   return {
     type: SET_HISTORY,
     payload: {

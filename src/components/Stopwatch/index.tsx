@@ -1,5 +1,5 @@
 import "./index.scss";
-import React, { useState, useEffect } from "react";
+import { FunctionComponent } from "react";
 import cn from "classnames";
 import dateUtils from "../../utils/date";
 import {
@@ -8,73 +8,54 @@ import {
   updateStopwatchValue,
   addStopwatchToHistory,
 } from "../../store/actions/stopwatch";
-import { connect } from "react-redux";
+import { Props } from "./props";
+import { useDispatch } from "react-redux";
+import useInterval from "use-interval";
 
-const Stopwatch = ({
+const Stopwatch: FunctionComponent<Props> = ({
   id,
   value,
   play,
   description,
   start,
   finish,
-  removeStopwatch,
-  playStopwatch,
-  updateStopwatchValue,
-  addStopwatchToHistory,
 }) => {
-  const [interval, setInter] = useState(null);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    _enableCounter(play);
+  useInterval(
+    () => {
+      dispatch(updateStopwatchValue(id, value + 1));
+    },
+    play ? 1000 : null
+  );
 
-    return () => {
-      _enableCounter(false);
-    };
-  }, [play]);
-
-  const _enableCounter = (enable) => {
-    _clearInterval();
-    if (enable) {
-      setInter(
-        setInterval(() => {
-          updateStopwatchValue(id, value++);
-        }, 1000)
+  const _addStopwatchToHistory = () => {
+    if (value > 0) {
+      dispatch(
+        addStopwatchToHistory({
+          description,
+          start,
+          value,
+          finish,
+        })
       );
     }
   };
 
-  const _addStopwatchToHistory = () => {
-    if (value > 0) {
-      addStopwatchToHistory({
-        description,
-        start,
-        value,
-        finish,
-      });
-    }
-  };
-
   const _togglePlay = () => {
-    playStopwatch(id, !play);
+    dispatch(playStopwatch(id, !play));
   };
 
   const _resetStopwatch = () => {
-    updateStopwatchValue(id, 0);
-    playStopwatch(id, false);
+    dispatch(updateStopwatchValue(id, 0));
+    dispatch(playStopwatch(id, false));
     _addStopwatchToHistory();
   };
 
   const _removeStopwatch = () => {
-    playStopwatch(id, false);
+    dispatch(playStopwatch(id, false));
     _addStopwatchToHistory();
-    removeStopwatch(id);
-  };
-
-  const _clearInterval = () => {
-    if (interval) {
-      clearInterval(interval);
-      setInter(null);
-    }
+    dispatch(removeStopwatch(id));
   };
 
   return (
@@ -90,7 +71,9 @@ const Stopwatch = ({
       {description ? (
         <h4 className="stopwatch__description">{description}</h4>
       ) : (
-        <h4 className="stopwatch__description stopwatch__description--empty">No description</h4>
+        <h4 className="stopwatch__description stopwatch__description--empty">
+          No description
+        </h4>
       )}
       <ul className="stopwatch__buttons">
         <li>
@@ -118,14 +101,4 @@ const Stopwatch = ({
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeStopwatch: (id) => dispatch(removeStopwatch(id)),
-    playStopwatch: (id, play) => dispatch(playStopwatch(id, play)),
-    updateStopwatchValue: (id, value) =>
-      dispatch(updateStopwatchValue(id, value)),
-    addStopwatchToHistory: (data) => dispatch(addStopwatchToHistory(data)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Stopwatch);
+export default Stopwatch;
