@@ -7,8 +7,9 @@ import {
   UPDATE_STOPWATCH_VALUE,
   PLAY_STOPWATCH,
   SET_STOPWATCHES,
-  ADD_STOPWATCH_TO_HISTORY,
+  ADD_HISTORY_ITEM,
   SET_HISTORY,
+  SET_HISTORY_SORT_METHOD,
 } from "./stopwatch.actionNames";
 import { StopwatchAction } from "./stopwatch.actionTypes";
 
@@ -62,7 +63,7 @@ const stopwatchReducer = (
         ...state,
         stopwatches: action.payload.stopwatches,
       };
-    case ADD_STOPWATCH_TO_HISTORY:
+    case ADD_HISTORY_ITEM:
       const item = action.payload.data;
       if (!item.finish) {
         item.finish = new Date().valueOf();
@@ -75,6 +76,11 @@ const stopwatchReducer = (
       return {
         ...state,
         history: action.payload.history,
+      };
+    case SET_HISTORY_SORT_METHOD:
+      return {
+        ...state,
+        historySortMethod: action.payload.method,
       };
     default:
       return state;
