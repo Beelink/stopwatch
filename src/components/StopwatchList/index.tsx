@@ -30,7 +30,7 @@ const StopwatchList: FunctionComponent = () => {
     } else {
       dispatch(setStopwatches([stopwatchUtils.generateNewStopwatch("")]));
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     localStorageUtils.saveStopwatches(stopwatches);

@@ -1,7 +1,7 @@
 import "./index.scss";
 import { setHistory } from "../../store/stopwatch/stopwatch.actions";
 import dateUtils from "../../utils/date";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState, useCallback } from "react";
 import localStorageUtils from "../../utils/localStorage";
 import cn from "classnames";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,7 +19,7 @@ const HistoryTable: FunctionComponent = () => {
     if (h && h.length) {
       dispatch(setHistory(h));
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     localStorageUtils.saveHistory(history);
@@ -41,50 +41,53 @@ const HistoryTable: FunctionComponent = () => {
     dispatch(setHistory([]));
   };
 
-  const _compare = (a: SortableHistoryItem, b: SortableHistoryItem) => {
-    if (sort) {
-      const s = sort.substr(0, sort.indexOf("_"));
+  const _compare = useCallback(
+    (a: SortableHistoryItem, b: SortableHistoryItem) => {
+      if (sort) {
+        const s = sort.substr(0, sort.indexOf("_"));
 
-      let prop1: string = "";
-      let prop2: string = "";
-      switch (s) {
-        case "description":
-          prop1 = a.description;
-          prop2 = b.description;
-          break;
-        case "start":
-          prop1 = a.start;
-          prop2 = b.start;
-          break;
-        case "value":
-          prop1 = a.value;
-          prop2 = b.value;
-          break;
-        case "finish":
-          prop1 = a.finish;
-          prop2 = b.finish;
-          break;
-      }
-      prop1 = prop1.toLowerCase();
-      prop2 = prop2.toLowerCase();
+        let prop1: string = "";
+        let prop2: string = "";
+        switch (s) {
+          case "description":
+            prop1 = a.description;
+            prop2 = b.description;
+            break;
+          case "start":
+            prop1 = a.start;
+            prop2 = b.start;
+            break;
+          case "value":
+            prop1 = a.value;
+            prop2 = b.value;
+            break;
+          case "finish":
+            prop1 = a.finish;
+            prop2 = b.finish;
+            break;
+        }
+        prop1 = prop1.toLowerCase();
+        prop2 = prop2.toLowerCase();
 
-      if (prop1 < prop2) {
-        if (sort.endsWith("asc")) {
-          return -1;
-        } else {
-          return 1;
+        if (prop1 < prop2) {
+          if (sort.endsWith("asc")) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }
+        if (prop1 > prop2) {
+          if (sort.endsWith("asc")) {
+            return 1;
+          } else {
+            return -1;
+          }
         }
       }
-      if (prop1 > prop2) {
-        if (sort.endsWith("asc")) {
-          return 1;
-        } else {
-          return -1;
-        }
-      }
-    }
-    return 0;
-  };
+      return 0;
+    },
+    [sort]
+  );
 
   useEffect(() => {
     if (history) {
@@ -100,7 +103,7 @@ const HistoryTable: FunctionComponent = () => {
     } else {
       setSortedHistory(history);
     }
-  }, [sort, history]);
+  }, [sort, history, _compare]);
 
   if (history && history.length > 0) {
     return (
