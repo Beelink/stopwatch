@@ -10,6 +10,7 @@ const stopwatchUtils = {
       start: null,
       finish: null,
       syncStamp: null,
+      pending: false,
     };
   },
 };

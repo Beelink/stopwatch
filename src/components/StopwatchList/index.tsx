@@ -4,7 +4,7 @@ import Stopwatch from "../Stopwatch";
 import { FunctionComponent, useEffect } from "react";
 import localStorageUtils from "../../utils/localStorage";
 import stopwatchUtils from "../../utils/stopwatch";
-import { setStopwatches } from "../../store/stopwatch/stopwatch.actions";
+import { setStopwatches } from "../../store/stopwatch/stopwatch.actionCreators";
 import { GlobalState } from "../../types/state";
 
 const StopwatchList: FunctionComponent = () => {

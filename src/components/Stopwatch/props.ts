@@ -5,4 +5,5 @@ export interface Props {
   description: string;
   start: number | null;
   finish: number | null;
+  pending: boolean;
 }

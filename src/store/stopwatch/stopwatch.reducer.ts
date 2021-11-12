@@ -10,7 +10,9 @@ import {
   ADD_HISTORY_ITEM,
   SET_HISTORY,
   SET_HISTORY_SORT_METHOD,
-} from "./stopwatch.actionNames";
+  REQUEST_TIMER_START,
+  REQUEST_TIMER_SUCCESS,
+} from "./stopwatch.actions";
 import { StopwatchAction } from "./stopwatch.actionTypes";
 import historyUtils from "../../utils/history";
 
@@ -69,7 +71,7 @@ const stopwatchReducer = (
       if (!item.finish) {
         item.finish = new Date().valueOf();
       }
-      if(!item.posNumber) {
+      if (!item.posNumber) {
         item.posNumber = state.history.length;
       }
       return {
@@ -86,6 +88,26 @@ const stopwatchReducer = (
         ...state,
         historySortMethod: action.payload.method,
         history: historyUtils.sortHistory(state.history, action.payload.method),
+      };
+    case REQUEST_TIMER_START:
+      return {
+        ...state,
+        stopwatches: state.stopwatches.map((stopwatch) => {
+          if (stopwatch.id === action.payload.id) {
+            stopwatch.pending = true;
+          }
+          return stopwatch;
+        }),
+      };
+    case REQUEST_TIMER_SUCCESS:
+      return {
+        ...state,
+        stopwatches: state.stopwatches.map((stopwatch) => {
+          if (stopwatch.id === action.payload.id) {
+            stopwatch.pending = false;
+          }
+          return stopwatch;
+        }),
       };
     default:
       return state;

@@ -6,11 +6,13 @@ import {
   ADD_STOPWATCH,
   PLAY_STOPWATCH,
   REMOVE_STOPWATCH,
+  REQUEST_TIMER_START,
+  REQUEST_TIMER_SUCCESS,
   SET_HISTORY,
   SET_HISTORY_SORT_METHOD,
   SET_STOPWATCHES,
   UPDATE_STOPWATCH_VALUE,
-} from "./stopwatch.actionNames";
+} from "./stopwatch.actions";
 
 type AddStopwatchAction = {
   type: typeof ADD_STOPWATCH;
@@ -70,6 +72,20 @@ type SetHistorySortMethodAction = {
   };
 };
 
+export type RequestTimerStart = {
+  type: typeof REQUEST_TIMER_START;
+  payload: {
+    id: number;
+  };
+};
+
+export type RequestTimerSuccess = {
+  type: typeof REQUEST_TIMER_SUCCESS;
+  payload: {
+    id: number;
+  };
+};
+
 export type StopwatchAction =
   | AddStopwatchAction
   | RemoveStopwatchAction
@@ -78,4 +94,6 @@ export type StopwatchAction =
   | SetStopwatchesAction
   | AddHistoryItemAction
   | SetHistoryAction
-  | SetHistorySortMethodAction;
+  | SetHistorySortMethodAction
+  | RequestTimerStart
+  | RequestTimerSuccess;

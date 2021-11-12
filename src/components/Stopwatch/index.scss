@@ -12,6 +12,8 @@
   flex-direction: column;
   animation-name: anim-appear;
   animation-duration: $animation-duration;
+  position: relative;
+  overflow: hidden;
 
   &__value {
     margin: 24px 0 0;
@@ -60,6 +62,7 @@
 
     &:disabled {
       opacity: $disabled-opacity;
+      pointer-events: none;
     }
 
     &:hover {

@@ -1,7 +1,7 @@
 import "./index.scss";
 import { useDispatch } from "react-redux";
 import { FunctionComponent, useRef } from "react";
-import { addStopwatch } from "../../store/stopwatch/stopwatch.actions";
+import { addStopwatch } from "../../store/stopwatch/stopwatch.actionCreators";
 import stopwatchUtils from "../../utils/stopwatch";
 
 const AddStopwatchButton: FunctionComponent = () => {

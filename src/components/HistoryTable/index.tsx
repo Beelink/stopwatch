@@ -2,7 +2,7 @@ import "./index.scss";
 import {
   setHistory,
   setHistorySortMethod,
-} from "../../store/stopwatch/stopwatch.actions";
+} from "../../store/stopwatch/stopwatch.actionCreators";
 import dateUtils from "../../utils/date";
 import { FunctionComponent, useEffect } from "react";
 import localStorageUtils from "../../utils/localStorage";
