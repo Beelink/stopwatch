@@ -1,0 +1,17 @@
+@import "../../assets/scss/animations.scss";
+@import "../../assets/scss/variables.scss";
+
+.loader {
+  &__lds-dual-ring {
+    &::after {
+      content: " ";
+      display: block;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 4px solid $accent-color;
+      border-color: $accent-color transparent $accent-color transparent;
+      animation: lds-dual-ring $animation-duration linear infinite;
+    }
+  }
+}
