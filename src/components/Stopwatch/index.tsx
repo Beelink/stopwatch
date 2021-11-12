@@ -45,6 +45,7 @@ const Stopwatch: FunctionComponent<Props> = ({
           start,
           value,
           finish,
+          posNumber: null,
         })
       );
       dispatch(setHistorySortMethod(historySortMethod));

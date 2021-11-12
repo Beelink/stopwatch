@@ -12,6 +12,7 @@ import {
   SET_HISTORY_SORT_METHOD,
 } from "./stopwatch.actionNames";
 import { StopwatchAction } from "./stopwatch.actionTypes";
+import historyUtils from "../../utils/history";
 
 const stopwatchReducer = (
   state: StopwatchState = stopwatchInitialState,
@@ -68,6 +69,9 @@ const stopwatchReducer = (
       if (!item.finish) {
         item.finish = new Date().valueOf();
       }
+      if(!item.posNumber) {
+        item.posNumber = state.history.length;
+      }
       return {
         ...state,
         history: [item, ...state.history],
@@ -81,6 +85,7 @@ const stopwatchReducer = (
       return {
         ...state,
         historySortMethod: action.payload.method,
+        history: historyUtils.sortHistory(state.history, action.payload.method),
       };
     default:
       return state;

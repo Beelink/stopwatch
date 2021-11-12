@@ -59,7 +59,7 @@ type AddHistoryItemAction = {
 type SetHistoryAction = {
   type: typeof SET_HISTORY;
   payload: {
-    history: Stopwatch[];
+    history: HistoryItem[];
   };
 };
 
