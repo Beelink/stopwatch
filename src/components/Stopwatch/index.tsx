@@ -6,13 +6,15 @@ import {
   removeStopwatch,
   playStopwatch,
   updateStopwatchValue,
-  addStopwatchToHistory,
-} from "../../store/actions/stopwatch";
+  addHistoryItem,
+  setHistorySortMethod,
+} from "../../store/stopwatch/stopwatch.actions";
 import { Props } from "./props";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useInterval from "use-interval";
 import Loader from "../Loader";
 import fakeService from "../../api/fakeService";
+import { GlobalState } from "../../types/state";
 
 const Stopwatch: FunctionComponent<Props> = ({
   id,
@@ -23,6 +25,9 @@ const Stopwatch: FunctionComponent<Props> = ({
   finish,
 }) => {
   const dispatch = useDispatch();
+  const historySortMethod = useSelector(
+    (state: GlobalState) => state.stopwatch.historySortMethod
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   useInterval(
@@ -35,13 +40,15 @@ const Stopwatch: FunctionComponent<Props> = ({
   const _addStopwatchToHistory = () => {
     if (value > 0) {
       dispatch(
-        addStopwatchToHistory({
+        addHistoryItem({
           description,
           start,
           value,
           finish,
+          posNumber: null,
         })
       );
+      dispatch(setHistorySortMethod(historySortMethod));
     }
   };
 

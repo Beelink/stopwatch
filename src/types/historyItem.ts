@@ -3,4 +3,5 @@ export type HistoryItem = {
   value: number;
   start: number | null;
   finish: number | null;
+  posNumber: number | null;
 };

@@ -1,14 +1,16 @@
+import { HistorySortMethod } from "../../enums/historySortMethod";
 import { HistoryItem } from "../../types/historyItem";
 import { Stopwatch } from "../../types/stopwatch";
 import {
+  ADD_HISTORY_ITEM,
   ADD_STOPWATCH,
-  ADD_STOPWATCH_TO_HISTORY,
   PLAY_STOPWATCH,
   REMOVE_STOPWATCH,
   SET_HISTORY,
+  SET_HISTORY_SORT_METHOD,
   SET_STOPWATCHES,
   UPDATE_STOPWATCH_VALUE,
-} from "../actionNames/stopwatch";
+} from "./stopwatch.actionNames";
 
 type AddStopwatchAction = {
   type: typeof ADD_STOPWATCH;
@@ -47,8 +49,8 @@ type SetStopwatchesAction = {
   };
 };
 
-type AddStopwatchToHistoryAction = {
-  type: typeof ADD_STOPWATCH_TO_HISTORY;
+type AddHistoryItemAction = {
+  type: typeof ADD_HISTORY_ITEM;
   payload: {
     data: HistoryItem;
   };
@@ -57,7 +59,14 @@ type AddStopwatchToHistoryAction = {
 type SetHistoryAction = {
   type: typeof SET_HISTORY;
   payload: {
-    history: Stopwatch[];
+    history: HistoryItem[];
+  };
+};
+
+type SetHistorySortMethodAction = {
+  type: typeof SET_HISTORY_SORT_METHOD;
+  payload: {
+    method: HistorySortMethod;
   };
 };
 
@@ -67,5 +76,6 @@ export type StopwatchAction =
   | UpdateStopwatchAction
   | PlayStopwatchAction
   | SetStopwatchesAction
-  | AddStopwatchToHistoryAction
-  | SetHistoryAction;
+  | AddHistoryItemAction
+  | SetHistoryAction
+  | SetHistorySortMethodAction;

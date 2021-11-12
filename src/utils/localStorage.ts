@@ -1,5 +1,7 @@
+import { HistorySortMethod } from "../enums/historySortMethod";
 import { HistoryItem } from "../types/historyItem";
 import { Stopwatch } from "../types/stopwatch";
+import historyUtils from "./history";
 
 const localStorageUtils = {
   saveStopwatches: (stopwatches: Stopwatch[]) => {
@@ -14,7 +16,10 @@ const localStorageUtils = {
     return stopwatches;
   },
   saveHistory: (history: HistoryItem[]) => {
-    localStorage.setItem("history", JSON.stringify(history));
+    localStorage.setItem(
+      "history",
+      JSON.stringify(historyUtils.sortHistory(history, HistorySortMethod.none))
+    );
   },
   loadHistory: (): HistoryItem[] => {
     let history: HistoryItem[] = [];

@@ -1,3 +1,4 @@
+import { HistorySortMethod } from "../../enums/historySortMethod";
 import { HistoryItem } from "../../types/historyItem";
 import { Stopwatch } from "../../types/stopwatch";
 import {
@@ -6,9 +7,10 @@ import {
   UPDATE_STOPWATCH_VALUE,
   PLAY_STOPWATCH,
   SET_STOPWATCHES,
-  ADD_STOPWATCH_TO_HISTORY,
   SET_HISTORY,
-} from "../actionNames/stopwatch";
+  SET_HISTORY_SORT_METHOD,
+  ADD_HISTORY_ITEM,
+} from "./stopwatch.actionNames";
 
 export const addStopwatch = (stopwatch: Stopwatch) => {
   return {
@@ -57,9 +59,9 @@ export const setStopwatches = (stopwatches: Stopwatch[]) => {
   };
 };
 
-export const addStopwatchToHistory = (data: HistoryItem) => {
+export const addHistoryItem = (data: HistoryItem) => {
   return {
-    type: ADD_STOPWATCH_TO_HISTORY,
+    type: ADD_HISTORY_ITEM,
     payload: {
       data,
     },
@@ -71,6 +73,15 @@ export const setHistory = (history: HistoryItem[]) => {
     type: SET_HISTORY,
     payload: {
       history,
+    },
+  };
+};
+
+export const setHistorySortMethod = (method: HistorySortMethod) => {
+  return {
+    type: SET_HISTORY_SORT_METHOD,
+    payload: {
+      method,
     },
   };
 };
